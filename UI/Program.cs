@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using UI.Areas.Identity;
 using UI.Data;
+using MudBlazor.Services;
 
 namespace UI
 {
@@ -26,6 +27,7 @@ namespace UI
             builder.Services.AddServerSideBlazor();
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddMudServices();
 
             var app = builder.Build();
 
