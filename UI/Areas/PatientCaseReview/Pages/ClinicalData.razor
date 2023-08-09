@@ -6,13 +6,16 @@
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
 
-                <MudTextField T="string" Label="Current residence town" Required="true" RequiredError="Current residence is required!" />
-                <MudTextField T="string" Label="Previous residential towns " Required="false" RequiredError=" is required!" />
+                <MudTextField T="string" Label="Temperature" Required="true" RequiredError="Temperature is required!" />
+                <MudTextField T="Int16" Label="Hg count " Required="false" />
+                <MudDatePicker Label="Date of last GP visit" Editable="true" @bind-Date="date" Placeholder="Select Date" />
+                <MudRadioGroup @bind-SelectedOption="prevPrescription_Radio">
+                    <MudRadio Option="true" Color="Color.Primary" Dense="true">Previous prescription known</MudRadio>
+                    <MudRadio Option="false" Color="Color.Secondary" Dense="false">Previous prescription unknown</MudRadio>
+                </MudRadioGroup>
+                <MudTextField T="string" Label="Last prescription" Required="false"  />
 
 
-
-                <MudTextField T="string" Label="Occupation" Required="true" RequiredError="Occupation is required!" />
-                <MudTextField T="string" Label="Previous occupation" Required="false" />
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Register</MudButton>
@@ -43,5 +46,6 @@
     string[] errors = { };
     MudTextField<string> pwField1;
     MudForm form;
-
+    DateTime? date = DateTime.Today;
+    public bool prevPrescription_Radio { get; set; } = true;
 }

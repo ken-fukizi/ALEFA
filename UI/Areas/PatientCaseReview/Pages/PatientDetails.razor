@@ -27,14 +27,16 @@
                         <MudRadio Option="@("Professional")">Male</MudRadio>
                     </MudRadioGroup>
                 </div>
-                <MudTextField T="Int16" Label="Patient Age" Required="true" RequiredError="Age is required!" />
+                <MudTextField T="Int16" Label="Age" Required="true" RequiredError="Age is required!" />
+                <MudTextField T="Int16" Label="Weight (Kg)" Required="true" RequiredError="Weight is required!" />
+                <MudTextField T="Int16" Label="Height (Cm)" Required="true" RequiredError="Age is required!" />
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Register</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
-        @*<MudPaper Class="pa-4"></MudPaper>*@
+        
         <MudPaper Class="pa-4 mt-4">
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Validate</MudButton>
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
