@@ -20,7 +20,7 @@ namespace UI.Services
                     weight:patientDetails.Weight,
                     height: patientDetails.Height
                 );
-            Console.WriteLine(patient.Gender);
+            
         }
     }
 }
