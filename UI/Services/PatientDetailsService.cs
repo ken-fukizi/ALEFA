@@ -15,7 +15,8 @@ namespace UI.Services
                     lastName:patientDetails.LastName, 
                     email: patientDetails.Email, 
                     phoneNumber: patientDetails.PhoneNumber, 
-                    gender: Enumeration.FromDisplayName<EnumGender>(patientDetails.Gender.ToString()), 
+                    //gender: Enumeration.FromDisplayName<EnumGender>(patientDetails.Gender.ToString()),
+                    gender: patientDetails.Gender,
                     age: patientDetails.Age,
                     weight:patientDetails.Weight,
                     height: patientDetails.Height
