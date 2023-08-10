@@ -18,9 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Repositories\" />
-    <Folder Include="Domain\Contracts\" />
     <Folder Include="Domain\Events\" />
-    <Folder Include="Domain\Models\PatientAggregate\" />
   </ItemGroup>
 
   <ItemGroup>
