@@ -1,0 +1,74 @@
+﻿@page "/symptoms"
+<h3>Symptoms</h3>
+<h2>2 of 4</h2>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+
+                <MudSelect T="string" Label="US States" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="options">
+                    @foreach (var symptom in symptoms)
+                    {
+                        <MudSelectItem T="string" Value="@symptom">@symptom</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudGrid Class="mt-6 px-4">
+                    <MudItem xs="6">
+                        <MudText Typo="Typo.subtitle2">Value:</MudText>
+                        <MudText Typo="Typo.subtitle2">"</MudText>
+                        <MudText Typo="Typo.body2" Class="pl-4">@value</MudText>
+                        <MudText Typo="Typo.subtitle2">"</MudText>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudText Typo="Typo.subtitle2">SelectedValues: HashSet&lt;string&gt;</MudText>
+                        <MudText Typo="Typo.subtitle2">{</MudText>
+                        <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", options.Select(x => $"\"{x}\"")))</MudText>
+                            <MudText Typo="Typo.subtitle2">}</MudText>
+                        </MudItem>
+                    </MudGrid>
+
+                
+            </MudForm>
+        </MudPaper>
+
+        <MudPaper Class="pa-4 mt-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Validate</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
+            <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+
+            <MudText Typo="Typo.subtitle2">Symptoms Interactive Chat</MudText>
+                @*https://www.mayoclinic.org/symptom-checker/chest-pain-in-adults-adult/related-factors/itt-20009075*@
+                
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+
+
+@code {
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
+    private string value { get; set; } = "Nothing selected";
+    private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Headache" };
+
+    private string[] symptoms =
+    {
+        "Abdominal pain", "Ankle pain", "Blood in stool", "Chest pain", "Constipation",
+        "Cough", "Diarrhoea", "Difficulty in swallowing", "Dizziness",
+        "Eye discomfort and redness", "Foot pain", "Foot swelling",
+        "Headaches", "Heart palpitations", "Hip pain", "Knee pain", "Low back pain",
+        "Nasal congestion", "Nausea or vomiting", "Neck pain", "Numbness or tingling in hands", "Pelvic pain",
+        "Shortness of breath", "Shoulder pain", "Sore throat", "Urinary problems",
+        "Wheezing"
+    };
+
+}
