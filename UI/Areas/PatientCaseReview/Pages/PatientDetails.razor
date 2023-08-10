@@ -4,6 +4,10 @@
 
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using UI.Areas.PatientCaseReview.Pages.ViewModels;
+@using UI.Services;
+@inject IPatientDetailsService patientService
+@inject MudBlazor.ISnackbar snackBar
 
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -11,8 +15,8 @@
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
                 
                 
-                <MudTextField T="string" Label="First Name" Required="true" RequiredError="Patient first name is required!" />
-                <MudTextField T="string" Label="Last Name" Required="true" RequiredError="Patient last name is required!" />
+                <MudTextField @bind-Value="patient.FirstName" T="string" Label="First Name" Variant="Variant.Text" Required="true" RequiredError="Patient first name is required!" />
+                <MudTextField @bind-Value= "patient.LastName" T="string" Label="Last Name" Required="true" RequiredError="Patient last name is required!" />
                 
                                 
                 <div class="d-flex">
@@ -30,7 +34,7 @@
                 <MudTextField T="Int16" Label="Height (Cm)" Required="true" RequiredError="Age is required!" />
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree to terms and conditions" Label="I agree to terms and conditions!" />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Submit</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SavePatient">Submit</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
@@ -58,29 +62,11 @@
     string[] errors = { };
     MudTextField<string> pwField1;
     MudForm form;
-
-    private IEnumerable<string> PasswordStrength(string pw)
+    private PatientViewModel patient = new PatientViewModel();
+    private void SavePatient()
     {
-        if (string.IsNullOrWhiteSpace(pw))
-        {
-            yield return "Password is required!";
-            yield break;
-        }
-        if (pw.Length < 8)
-            yield return "Password must be at least of length 8";
-        if (!Regex.IsMatch(pw, @"[A-Z]"))
-            yield return "Password must contain at least one capital letter";
-        if (!Regex.IsMatch(pw, @"[a-z]"))
-            yield return "Password must contain at least one lowercase letter";
-        if (!Regex.IsMatch(pw, @"[0-9]"))
-            yield return "Password must contain at least one digit";
-    }
-
-    private string PasswordMatch(string arg)
-    {
-        if (pwField1.Value != arg)
-            return "Passwords don't match";
-        return null;
+        patientService.SavePatientDetails(patient);
+        snackBar.Add("Patient details saved:::", Severity.Success);
     }
 
 }
