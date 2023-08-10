@@ -30,9 +30,9 @@
                               Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
 
                 <MudTextField @bind-Value="patient.PhoneNumber" T="string" Label="Phone number" Required="true" RequiredError="Phone number is required!" />
-                <MudTextField @bind-Value="patient.Age" T="Int16" Label="Age" Required="true" RequiredError="Age is required!" />
-                <MudTextField T="Int16" Label="Weight (Kg)" Required="true" RequiredError="Weight is required!" />
-                <MudTextField T="Int16" Label="Height (Cm)" Required="true" RequiredError="Age is required!" />
+                <MudTextField @bind-Value="patient.Age" T="int" Label="Age" Required="true" RequiredError="Age is required!" />
+                <MudTextField @bind-Value="patient.Weight" T="int" Label="Weight (Kg)" Required="true" RequiredError="Weight is required!" />
+                <MudTextField @bind-Value="patient.Height" T="int" Label="Height (Cm)" Required="true" RequiredError="Age is required!" />
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree to terms and conditions" Label="I agree to terms and conditions!" />
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SavePatient">Submit</MudButton>
