@@ -27,12 +27,7 @@ namespace SharedKernel
             return DisplayName;
         }
 
-        //List<string> errors = new List<string>();
-        //var inputMethodExists = Enumeration.GetAll<InputMethod>().Any(im => im.Id == externalReferenceItemDto.InputMethodId );
-        //    if (!inputMethodExists)
-        //{
-        //    errors.Add($"External Reference Item Input Method Id {externalReferenceItemDto.InputMethodId} does not exist");
-
+       
         /// <summary>
         /// Check if an id is valid for an enum
         /// </summary>
