@@ -18,7 +18,13 @@
 
   <ItemGroup>
     <Folder Include="Data\Repositories\" />
-    <Folder Include="Services\" />
+    <Folder Include="Domain\Contracts\" />
+    <Folder Include="Domain\Events\" />
+    <Folder Include="Domain\Models\PatientAggregate\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>
