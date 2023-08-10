@@ -26,11 +26,11 @@
                         <MudRadio Option="@("Female")">Female</MudRadio>
                     </MudRadioGroup>
                 </div>
-                <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!"
+                <MudTextField @bind-Value="patient.Email" T="string" Label="Email" Required="true" RequiredError="Email is required!"
                               Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
 
-                <MudTextField T="string" Label="Phone number" Required="true" RequiredError="Phone number is required!" />
-                <MudTextField T="Int16" Label="Age" Required="true" RequiredError="Age is required!" />
+                <MudTextField @bind-Value="patient.PhoneNumber" T="string" Label="Phone number" Required="true" RequiredError="Phone number is required!" />
+                <MudTextField @bind-Value="patient.Age" T="Int16" Label="Age" Required="true" RequiredError="Age is required!" />
                 <MudTextField T="Int16" Label="Weight (Kg)" Required="true" RequiredError="Weight is required!" />
                 <MudTextField T="Int16" Label="Height (Cm)" Required="true" RequiredError="Age is required!" />
                 <div class="d-flex align-center justify-space-between">
