@@ -46,6 +46,7 @@ namespace UI.Services
             clinicalData.EntityIdentifier = clinicalDataViewModel.PatientGuid;
             
             clinicalData.TrackingState = TrackableEntities.Common.Core.TrackingState.Added;
+            _dbContext.ClinicalData.Add( clinicalData );
             _dbContext.SaveChanges();
         }
 
