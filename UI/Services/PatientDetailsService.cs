@@ -64,6 +64,10 @@ namespace UI.Services
                     patientGuid: symptomsViewModel.PatientGuid, 
                     options: symptomsViewModel.Options
                 );
+            symptoms.EntityIdentifier = symptomsViewModel.PatientGuid;
+            symptoms.TrackingState = TrackableEntities.Common.Core.TrackingState.Added;
+            _dbContext.Symptoms.Add( symptoms );
+            _dbContext.SaveChanges();
             
         }
     }
