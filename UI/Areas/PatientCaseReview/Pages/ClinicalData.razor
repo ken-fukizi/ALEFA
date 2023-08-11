@@ -15,7 +15,7 @@
 
                 <MudTextField @bind-Value="clinicalData.Temperature" T="int" Label="Temperature in ° Celcius" Required="true" RequiredError="Temperature is required!" />
                 
-                <MudTextField T="int" Label="HaemoGlobin (Hg) count " Required="false" />
+                <MudTextField @bind-Value="clinicalData.HgCount" T="int" Label="HaemoGlobin (Hg) count " Required="false" />
                 
                 <MudDatePicker Label="Date of last GP visit" Editable="true" @bind-Date="clinicalData.LastVisitDateTime" Placeholder="Select Date" />
                 
@@ -24,7 +24,7 @@
                     <MudRadio Option="false" Color="Color.Secondary" Dense="false">Previous prescription unknown</MudRadio>
                 </MudRadioGroup>
                 
-                <MudTextField Label="Enter last prescriptions separated by a comma" @bind-Value="clinicalData.LastPrescriptions" />
+                <MudTextField Label="Enter last prescriptions separated by a comma" @bind-Value="clinicalData.PrescriptionValues" />
 
 
                 <div class="d-flex align-center justify-space-between">
