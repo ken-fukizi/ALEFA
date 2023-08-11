@@ -1,6 +1,8 @@
-﻿namespace UI.Domain.Models.SymptomsAggregate
+﻿using SharedKernel;
+
+namespace UI.Domain.Models.SymptomsAggregate
 {
-    public class SymptomsModel
+    public class SymptomsModel : AggregateRoot
     {
         public static class Factory
         {

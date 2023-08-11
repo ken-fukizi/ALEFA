@@ -1,9 +1,11 @@
-﻿using SharedKernel;
+﻿using Microsoft.Extensions.Options;
+using SharedKernel;
 using UI.Areas.PatientCaseReview.Pages.ViewModels;
 using UI.Data;
 using UI.Domain.Models.DemographicsAggregate;
 using UI.Domain.Models.Enumerations;
 using UI.Domain.Models.PatientAggregate;
+using UI.Domain.Models.SymptomsAggregate;
 
 namespace UI.Services
 {
@@ -29,19 +31,19 @@ namespace UI.Services
             _dbContext.SaveChanges();
         }
 
-        public Guid SavePatientDetails(PatientViewModel patientDetails)
+        public Guid SavePatientDetails(PatientViewModel patientViewModel)
         {
             var patient = PatientModel.Factory.Create
                 (
-                    firstName: patientDetails.FirstName, 
-                    lastName:patientDetails.LastName, 
-                    email: patientDetails.Email, 
-                    phoneNumber: patientDetails.PhoneNumber, 
+                    firstName: patientViewModel.FirstName, 
+                    lastName:patientViewModel.LastName, 
+                    email: patientViewModel.Email, 
+                    phoneNumber: patientViewModel.PhoneNumber, 
                     //gender: Enumeration.FromDisplayName<EnumGender>(patientDetails.Gender.ToString()),
-                    gender: patientDetails.Gender,
-                    age: patientDetails.Age,
-                    weight:patientDetails.Weight,
-                    height: patientDetails.Height
+                    gender: patientViewModel.Gender,
+                    age: patientViewModel.Age,
+                    weight:patientViewModel.Weight,
+                    height: patientViewModel.Height
                 );
             patient.EntityIdentifier = Guid.NewGuid();
             patient.TrackingState = TrackableEntities.Common.Core.TrackingState.Added;
@@ -54,9 +56,15 @@ namespace UI.Services
             
         }
 
-        public void SavePatientSymptoms(SymptomsViewModel symptoms)
+        public void SavePatientSymptoms(SymptomsViewModel symptomsViewModel)
         {
-            throw new NotImplementedException();
+            var symptoms = 
+                SymptomsModel.Factory.Create
+                (
+                    patientGuid: symptomsViewModel.PatientGuid, 
+                    options: symptomsViewModel.Options
+                );
+            
         }
     }
 }
