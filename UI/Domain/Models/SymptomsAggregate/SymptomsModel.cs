@@ -17,7 +17,7 @@ namespace UI.Domain.Models.SymptomsAggregate
             PatientGuid = patientGuid;
             Options = options;
         }
-        public Guid PatientGuid { get; set; }
-        public IEnumerable<string> Options { get; set; } 
+        public Guid PatientGuid { get; private set; }
+        public IEnumerable<string> Options { get; private set; } 
     }
 }
