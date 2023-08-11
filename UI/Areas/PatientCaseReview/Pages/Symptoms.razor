@@ -1,6 +1,6 @@
 ﻿@page "/symptoms"
 <h3>Symptoms</h3>
-<h2>2 of 4</h2>
+<h2>3 of 4</h2>
 
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -55,7 +55,17 @@
 @code {
     bool success;
     string[] errors = { };
-    MudTextField<string> pwField1;
+    [Parameter]
+    public string fieldValue { get; set; }
+    private Guid patientGuid;
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(fieldValue))
+        {
+            patientGuid = Guid.Parse(fieldValue);
+            
+        }
+    }
     MudForm form;
     private string value { get; set; } = "Nothing selected";
     private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Headache" };

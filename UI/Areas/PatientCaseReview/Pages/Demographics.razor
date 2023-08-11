@@ -1,9 +1,18 @@
 ﻿@page "/demographics"
 <h3>Demographics</h3>
-<h2>Page 3 of 4</h2>
+<h2>Page 2 of 4</h2>
 
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using UI.Areas.PatientCaseReview.Pages.ViewModels;
+@using UI.Areas.PatientCaseReview.Pages.ViewModels.Enums;
+@using UI.Services;
+@inject IPatientDetailsService patientService
+@inject MudBlazor.ISnackbar snackBar
+@inject NavigationManager NavigationManager
+
+
+
 
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -11,7 +20,7 @@
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
 
-                <MudTextField T="string" Label="Current residence town" Required="true" RequiredError="Current residence is required!"   />
+                <MudTextField @bind-Value="demographics.CurrentTown" T="string" Label="Current residence town" Required="true" RequiredError="Current residence is required!"   />
                 <MudTextField T="string" Label="Previous residential towns " Required="false" RequiredError=" is required!"         />
                 
                 
@@ -20,7 +29,7 @@
                 <MudTextField T="string" Label="Previous occupation" Required="false"  />
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Register</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SaveDemographics">Submit</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
@@ -46,8 +55,25 @@
 @code {
     bool success;
     string[] errors = { };
-    MudTextField<string> pwField1;
+    [Parameter]
+    public string fieldValue { get; set; }
     MudForm form;
+    private Guid patientGuid;
+    private DemographicsViewModel demographics = new DemographicsViewModel();
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(fieldValue))
+        {
+            patientGuid = Guid.Parse(fieldValue);
+            demographics.PatientGuid = patientGuid;
+        }        
+    }
+    private void SaveDemographics()
+    {
+        patientService.SaveDemographics(demographics);
+        snackBar.Add("Patient demographics saved successfully:::", Severity.Success);
+        NavigationManager.NavigateTo($"/symptoms?fieldValue={fieldValue}");
+    }
 
 }
 

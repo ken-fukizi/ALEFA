@@ -9,6 +9,7 @@
 @using UI.Services;
 @inject IPatientDetailsService patientService
 @inject MudBlazor.ISnackbar snackBar
+@inject NavigationManager NavigationManager
 
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -58,18 +59,21 @@
 </MudGrid>
 
 
+
 @code {
     bool success;
     string[] errors = { };
-    MudTextField<string> pwField1;
+    [Parameter]
+    public string fieldValue { get; set; }
     MudForm form;
     public string selectedGender { get; set; }
     private PatientViewModel patient = new PatientViewModel();
     private void SavePatient()
     {
         patient.Gender = selectedGender;
-        patientService.SavePatientDetails(patient);
-        snackBar.Add("Patient details saved:::", Severity.Success);
+        var savedPatientGuid = patientService.SavePatientDetails(patient);
+        snackBar.Add("Patient details saved successfully:::", Severity.Success);
+        NavigationManager.NavigateTo($"/demographics?fieldValue={savedPatientGuid}");
     }
 
 }
