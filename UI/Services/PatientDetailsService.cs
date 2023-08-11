@@ -53,5 +53,10 @@ namespace UI.Services
             return patient.EntityIdentifier;
             
         }
+
+        public void SavePatientSymptoms(SymptomsViewModel symptoms)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -6,5 +6,7 @@ namespace UI.Services
     {
         Guid SavePatientDetails(PatientViewModel patientDetails);
         void SaveDemographics(DemographicsViewModel demographics);
+
+        void SavePatientSymptoms(SymptomsViewModel symptoms);
     }
 }

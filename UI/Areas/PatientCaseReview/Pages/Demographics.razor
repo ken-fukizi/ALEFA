@@ -21,12 +21,12 @@
 
 
                 <MudTextField @bind-Value="demographics.CurrentTown" T="string" Label="Current residence town" Required="true" RequiredError="Current residence is required!"   />
-                <MudTextField T="string" Label="Previous residential towns " Required="false" RequiredError=" is required!"         />
+                <MudTextField @bind-Value="demographics.PreviousTowns" T="string" Label="Previous residential towns " Required="false" RequiredError=" is required!"         />
                 
                 
                 
-                <MudTextField T="string" Label="Occupation" Required="true" RequiredError="Occupation is required!" />
-                <MudTextField T="string" Label="Previous occupation" Required="false"  />
+                <MudTextField @bind-Value="demographics.Occupation" T="string" Label="Occupation" Required="true" RequiredError="Occupation is required!" />
+                
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SaveDemographics">Submit</MudButton>
