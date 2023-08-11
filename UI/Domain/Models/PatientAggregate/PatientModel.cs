@@ -27,14 +27,14 @@ namespace UI.Domain.Models.PatientAggregate
             Weight = weight;
             Height = height;
         }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Gender { get; set; }
-        public int Age { get; set; }
-        public int Weight { get; set; }
-        public int Height { get; set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string Email { get; private set; }
+        public string PhoneNumber { get; private set; }
+        public string Gender { get; private set; }
+        public int Age { get; private set; }
+        public int Weight { get; private set; }
+        public int Height { get; private set; }
 
     }
 }

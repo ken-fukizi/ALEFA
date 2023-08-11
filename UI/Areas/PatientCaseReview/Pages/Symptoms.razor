@@ -1,13 +1,20 @@
 ﻿@page "/symptoms"
 <h3>Symptoms</h3>
-<h2>2 of 4</h2>
+<h2>3 of 4</h2>
+
+@using UI.Areas.PatientCaseReview.Pages.ViewModels;
+@using UI.Areas.PatientCaseReview.Pages.ViewModels.Enums;
+@using UI.Services;
+@inject IPatientDetailsService patientService
+@inject MudBlazor.ISnackbar snackBar
+@inject NavigationManager NavigationManager
 
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-                <MudSelect T="string" Label="US States" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="options">
+                <MudSelect T="string" Label="US States" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="SelectedSymptoms.Options">
                     @foreach (var symptom in symptoms)
                     {
                         <MudSelectItem T="string" Value="@symptom">@symptom</MudSelectItem>
@@ -52,10 +59,21 @@
 
 
 
-@code {
+    @code {
     bool success;
     string[] errors = { };
-    MudTextField<string> pwField1;
+    [Parameter]
+    public string fieldValue { get; set; }
+    private Guid patientGuid;
+    private SymptomsViewModel SelectedSymptoms = new SymptomsViewModel();
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(fieldValue))
+        {
+            patientGuid = Guid.Parse(fieldValue);
+            
+        }
+    }
     MudForm form;
     private string value { get; set; } = "Nothing selected";
     private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Headache" };
@@ -70,5 +88,12 @@
         "Shortness of breath", "Shoulder pain", "Sore throat", "Urinary problems",
         "Wheezing"
     };
+
+    private void SaveSymptoms()
+    {
+        patientService.SavePatientSymptoms(SelectedSymptoms);
+        snackBar.Add("Patient symptoms saved successfully:::", Severity.Success);
+        NavigationManager.NavigateTo($"/clinicalData?fieldValue={patientGuid}");
+    }
 
 }

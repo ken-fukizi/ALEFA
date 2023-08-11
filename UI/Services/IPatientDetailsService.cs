@@ -4,6 +4,9 @@ namespace UI.Services
 {
     public interface IPatientDetailsService
     {
-        void SavePatientDetails(PatientViewModel patientDetails);
+        Guid SavePatientDetails(PatientViewModel patientDetails);
+        void SaveDemographics(DemographicsViewModel demographics);
+
+        void SavePatientSymptoms(SymptomsViewModel symptoms);
     }
 }
