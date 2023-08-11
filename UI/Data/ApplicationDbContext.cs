@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using UI.Domain.Models.ClinicalDataAggregate;
 using UI.Domain.Models.DemographicsAggregate;
 using UI.Domain.Models.PatientAggregate;
 using UI.Domain.Models.SymptomsAggregate;
@@ -17,6 +18,7 @@ namespace UI.Data
         public DbSet<PatientModel> Patients { get; set; }
         public DbSet<DemographicsModel> Demographics { get; set; }
         public DbSet<SymptomsModel> Symptoms { get; set; }
+        public DbSet<ClinicalDataModel> ClinicalData { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l=>l.UserId);
@@ -35,6 +37,8 @@ namespace UI.Data
                 .HasConversion(
                     v => string.Join(',', v),
                     v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
+            modelBuilder.Entity<ClinicalDataModel>().HasKey(d => d.Id);
 
         }
     }

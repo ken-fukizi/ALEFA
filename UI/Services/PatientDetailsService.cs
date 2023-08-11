@@ -2,6 +2,7 @@
 using SharedKernel;
 using UI.Areas.PatientCaseReview.Pages.ViewModels;
 using UI.Data;
+using UI.Domain.Models.ClinicalDataAggregate;
 using UI.Domain.Models.DemographicsAggregate;
 using UI.Domain.Models.Enumerations;
 using UI.Domain.Models.PatientAggregate;
@@ -27,7 +28,25 @@ namespace UI.Services
                         occupation: demographicsViewModel.Occupation
                 );
             demographics.EntityIdentifier = demographicsViewModel.PatientGuid;
+            _dbContext.Demographics.Add(demographics);
             demographics.TrackingState = TrackableEntities.Common.Core.TrackingState.Added;
+            _dbContext.SaveChanges();
+        }
+
+        public void SavePatientClinicalData(ClinicalDataViewModel clinicalDataViewModel)
+        {
+            var clinicalData = ClinicalDataModel.Factory.Create(
+                        patientGuid: clinicalDataViewModel.PatientGuid,
+                        temperature: clinicalDataViewModel.Temperature,
+                        hgCount: clinicalDataViewModel.HgCount,
+                        lastVisitDateTime: clinicalDataViewModel.LastVisitDateTime,
+                        lastPrescriptions: clinicalDataViewModel.PrescriptionValues
+
+                );
+            clinicalData.EntityIdentifier = clinicalDataViewModel.PatientGuid;
+            
+            clinicalData.TrackingState = TrackableEntities.Common.Core.TrackingState.Added;
+            _dbContext.ClinicalData.Add( clinicalData );
             _dbContext.SaveChanges();
         }
 

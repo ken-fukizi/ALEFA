@@ -1,20 +1,30 @@
-﻿<h3>ClinicalData</h3>
+﻿@page "/clinical-data"
+<h3>ClinicalData</h3>
 <h2>Page 4 of 4</h2>
+
+@using UI.Areas.PatientCaseReview.Pages.ViewModels;
+@using UI.Services;
+@inject IPatientDetailsService patientService
+@inject MudBlazor.ISnackbar snackBar
+@inject NavigationManager NavigationManager
 
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-
-                <MudTextField T="string" Label="Temperature" Required="true" RequiredError="Temperature is required!" />
-                <MudTextField T="Int16" Label="Hg count " Required="false" />
-                <MudDatePicker Label="Date of last GP visit" Editable="true" @bind-Date="date" Placeholder="Select Date" />
+                <MudTextField @bind-Value="clinicalData.Temperature" T="int" Label="Temperature in ° Celcius" Required="true" RequiredError="Temperature is required!" />
+                
+                <MudTextField @bind-Value="clinicalData.HgCount" T="int" Label="HaemoGlobin (Hg) count " Required="false" />
+                
+                <MudDatePicker Label="Date of last GP visit" Editable="true" @bind-Date="clinicalData.LastVisitDateTime" Placeholder="Select Date" />
+                
                 <MudRadioGroup @bind-SelectedOption="prevPrescription_Radio">
                     <MudRadio Option="true" Color="Color.Primary" Dense="true">Previous prescription known</MudRadio>
                     <MudRadio Option="false" Color="Color.Secondary" Dense="false">Previous prescription unknown</MudRadio>
                 </MudRadioGroup>
-                <MudTextField T="string" Label="Last prescription" Required="false"  />
+                
+                <MudTextField Label="Enter last prescriptions separated by a comma" @bind-Value="clinicalData.PrescriptionValues" />
 
 
                 <div class="d-flex align-center justify-space-between">
@@ -44,9 +54,27 @@
 
 @code {
     bool success;
-    string[] errors = { };
-    MudTextField<string> pwField1;
+    string[] errors = { };   
     MudForm form;
     DateTime? date = DateTime.Today;
-    public bool prevPrescription_Radio { get; set; } = true;
+    public bool prevPrescription_Radio { get; set; } = false; // Only here to decide conditional required status for last prescriptions
+    private ClinicalDataViewModel clinicalData = new ClinicalDataViewModel();
+    private Guid patientGuid;
+    [Parameter]
+    public string fieldValue { get; set; }
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(fieldValue))
+        {
+            patientGuid = Guid.Parse(fieldValue);
+            clinicalData.PatientGuid = patientGuid;
+        }
+    }
+
+    private void SaveClinicalData()
+    {        
+        patientService.SavePatientClinicalData(clinicalData);
+        snackBar.Add("Patient clinical data saved successfully:::", Severity.Success);
+        NavigationManager.NavigateTo($"/case-output?fieldValue={patientGuid}");
+    }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UI.Data;
 
@@ -11,9 +12,10 @@ using UI.Data;
 namespace UI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230811215932_clinical-data")]
+    partial class clinicaldata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,7 +222,7 @@ namespace UI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClinicalData");
+                    b.ToTable("ClinicalDataModels");
                 });
 
             modelBuilder.Entity("UI.Domain.Models.DemographicsAggregate.DemographicsModel", b =>

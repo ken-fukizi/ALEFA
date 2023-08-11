@@ -1,5 +1,18 @@
-﻿<h3>PatientCaseOutput</h3>
+﻿@page "/case-output"
+<h3>PatientCaseOutput</h3>
+
+@using UI.Areas.PatientCaseReview.Pages.ViewModels;
+@using UI.Services;
+@inject IPatientDetailsService patientService
+@inject MudBlazor.ISnackbar snackBar
+@inject NavigationManager NavigationManager
 
 @code {
+    //On initialize, service to consolidate all findings
 
+    //Collaboration with other departments happens along the journey here, with potential chatbots
+
+    //Then second or third opinions from other available doctors
+
+    //Then semi-final output, before asking for patient input, then the final treatment signed and sealed.
 }

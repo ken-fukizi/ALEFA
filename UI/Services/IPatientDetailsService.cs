@@ -1,4 +1,5 @@
-﻿using UI.Areas.PatientCaseReview.Pages.ViewModels;
+﻿using UI.Areas.PatientCaseReview.Pages;
+using UI.Areas.PatientCaseReview.Pages.ViewModels;
 
 namespace UI.Services
 {
@@ -8,5 +9,6 @@ namespace UI.Services
         void SaveDemographics(DemographicsViewModel demographics);
 
         void SavePatientSymptoms(SymptomsViewModel symptoms);
+        void SavePatientClinicalData(ClinicalDataViewModel clinicalData);
     }
 }
