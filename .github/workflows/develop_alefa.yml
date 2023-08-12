@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -53,6 +53,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'Alefa'
-          slot-name: 'Production'
+          slot-name: 'Development'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B044A5E4D54D4BB5874E85BC2A7FB763 }}
           package: .
