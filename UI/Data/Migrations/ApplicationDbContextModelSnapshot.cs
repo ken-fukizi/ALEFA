@@ -199,8 +199,8 @@ namespace UI.Data.Migrations
                     b.Property<Guid>("EntityIdentifier")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("HgCount")
-                        .HasColumnType("int");
+                    b.Property<double>("HgCount")
+                        .HasColumnType("float");
 
                     b.Property<string>("LastPrescriptions")
                         .IsRequired()
@@ -212,8 +212,8 @@ namespace UI.Data.Migrations
                     b.Property<Guid>("PatientGuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Temperature")
-                        .HasColumnType("int");
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
 
                     b.Property<int>("TrackingState")
                         .HasColumnType("int");
@@ -231,6 +231,10 @@ namespace UI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CurrentTown")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -246,6 +250,10 @@ namespace UI.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PreviousTowns")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

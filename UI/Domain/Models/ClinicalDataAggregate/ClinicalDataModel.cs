@@ -6,7 +6,7 @@ namespace UI.Domain.Models.ClinicalDataAggregate
     {
         public static class Factory
         {
-            public static ClinicalDataModel Create(Guid patientGuid, int temperature, int hgCount, DateTime? lastVisitDateTime, string lastPrescriptions) 
+            public static ClinicalDataModel Create(Guid patientGuid, double temperature, double hgCount, DateTime? lastVisitDateTime, string lastPrescriptions) 
             {
                 var newClinicalDataModel = new ClinicalDataModel
                     (
@@ -19,7 +19,7 @@ namespace UI.Domain.Models.ClinicalDataAggregate
                 return newClinicalDataModel; 
             }
         }
-        public ClinicalDataModel(Guid patientGuid, int temperature, int hgCount , DateTime? lastVisitDateTime, string lastPrescriptions)
+        public ClinicalDataModel(Guid patientGuid, double temperature, double hgCount , DateTime? lastVisitDateTime, string lastPrescriptions)
         {
             PatientGuid = patientGuid;
             Temperature = temperature;
@@ -29,8 +29,8 @@ namespace UI.Domain.Models.ClinicalDataAggregate
                       
         }
         public Guid PatientGuid { get; private set; }
-        public int Temperature { get; private set; }
-        public int HgCount { get; private set; }
+        public double Temperature { get; private set; }
+        public double HgCount { get; private set; }
         public DateTime? LastVisitDateTime { get; private set; }
         public string LastPrescriptions { get; private set; } = string.Empty;
     }

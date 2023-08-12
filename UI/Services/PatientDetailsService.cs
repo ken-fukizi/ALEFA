@@ -25,7 +25,9 @@ namespace UI.Services
                     patientGuid: demographicsViewModel.PatientGuid,
                         currentTown: demographicsViewModel.CurrentTown,
                         previousTowns: demographicsViewModel.PreviousTowns,
-                        occupation: demographicsViewModel.Occupation
+                        occupation: demographicsViewModel.Occupation,                       
+                        country: demographicsViewModel.Country, 
+                        region: demographicsViewModel.Region
                 );
             demographics.EntityIdentifier = demographicsViewModel.PatientGuid;
             _dbContext.Demographics.Add(demographics);
@@ -50,7 +52,7 @@ namespace UI.Services
             _dbContext.SaveChanges();
         }
 
-        public Guid SavePatientDetails(PatientViewModel patientViewModel)
+        public Guid SavePatientDetails(PatientDetailsViewModel patientViewModel)
         {
             var patient = PatientModel.Factory.Create
                 (

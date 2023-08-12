@@ -13,9 +13,9 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-                <MudTextField @bind-Value="clinicalData.Temperature" T="int" Label="Temperature in ° Celcius" Required="true" RequiredError="Temperature is required!" />
+                <MudTextField @bind-Value="clinicalData.Temperature" T="double" Label="Temperature in ° Celcius" Required="true" RequiredError="Temperature is required!" />
                 
-                <MudTextField @bind-Value="clinicalData.HgCount" T="int" Label="HaemoGlobin (Hg) count " Required="false" />
+                <MudTextField @bind-Value="clinicalData.HgCount" T="double" Label="HaemoGlobin (Hg) count " Required="false" />
                 
                 <MudDatePicker Label="Date of last GP visit" Editable="true" @bind-Date="clinicalData.LastVisitDateTime" Placeholder="Select Date" />
                 
@@ -29,21 +29,15 @@
 
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Register</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SaveClinicalData">Submit Clinical Data</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
-
-        <MudPaper Class="pa-4 mt-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Validate</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
-            <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
-        </MudPaper>
+        
     </MudItem>
     <MudItem xs="12" sm="5">
-        <MudPaper Class="pa-4 mud-height-full">
-            <MudText Typo="Typo.subtitle2">@($"Errors ({errors.Length})")</MudText>
-                @foreach (var error in errors)
+        <MudPaper Class="pa-4 mud-height-full">            
+            @foreach (var error in errors)
             {
                 <MudText Color="@Color.Error">@error</MudText>
             }
@@ -62,17 +56,18 @@
     private Guid patientGuid;
     [Parameter]
     public string fieldValue { get; set; }
+    string QueryString = "";
+
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(fieldValue))
-        {
-            patientGuid = Guid.Parse(fieldValue);
-            clinicalData.PatientGuid = patientGuid;
-        }
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        QueryString = uri.Query;
+        patientGuid = Guid.Parse(QueryString.Substring(QueryString.IndexOf('=') + 1));
     }
 
     private void SaveClinicalData()
-    {        
+    {
+        clinicalData.PatientGuid = patientGuid;
         patientService.SavePatientClinicalData(clinicalData);
         snackBar.Add("Patient clinical data saved successfully:::", Severity.Success);
         NavigationManager.NavigateTo($"/case-output?fieldValue={patientGuid}");

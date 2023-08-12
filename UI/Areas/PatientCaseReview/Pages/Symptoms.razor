@@ -14,37 +14,22 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-                <MudSelect T="string" Label="US States" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="SelectedSymptoms.Options">
+                <MudSelect T="string" Label="Patient symptoms" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="selectedSymptoms.Options">
                     @foreach (var symptom in symptoms)
                     {
                         <MudSelectItem T="string" Value="@symptom">@symptom</MudSelectItem>
                     }
                 </MudSelect>
 
-                <MudGrid Class="mt-6 px-4">
-                    <MudItem xs="6">
-                        <MudText Typo="Typo.subtitle2">Value:</MudText>
-                        <MudText Typo="Typo.subtitle2">"</MudText>
-                        <MudText Typo="Typo.body2" Class="pl-4">@value</MudText>
-                        <MudText Typo="Typo.subtitle2">"</MudText>
-                    </MudItem>
-                    <MudItem xs="6">
-                        <MudText Typo="Typo.subtitle2">SelectedValues: HashSet&lt;string&gt;</MudText>
-                        <MudText Typo="Typo.subtitle2">{</MudText>
-                        <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", options.Select(x => $"\"{x}\"")))</MudText>
-                            <MudText Typo="Typo.subtitle2">}</MudText>
-                        </MudItem>
-                    </MudGrid>
 
-                
+                <div class="d-flex align-center justify-space-between">
+                    <MudCheckBox T="bool" Required="true" RequiredError="You must agree all symptoms are selected" Label="Symptoms asre correct!" />
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SaveSymptoms">Submit Patient Symptoms</MudButton>
+                </div>
             </MudForm>
         </MudPaper>
 
-        <MudPaper Class="pa-4 mt-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Validate</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
-            <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
-        </MudPaper>
+        
     </MudItem>
     <MudItem xs="12" sm="5">
         <MudPaper Class="pa-4 mud-height-full">
@@ -59,24 +44,24 @@
 
 
 
-    @code {
+@code {
     bool success;
     string[] errors = { };
     [Parameter]
     public string fieldValue { get; set; }
     private Guid patientGuid;
-    private SymptomsViewModel SelectedSymptoms = new SymptomsViewModel();
+    private SymptomsViewModel selectedSymptoms = new SymptomsViewModel();
+    string queryString = "";
+
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(fieldValue))
-        {
-            patientGuid = Guid.Parse(fieldValue);
-            
-        }
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        queryString = uri.Query;
+        patientGuid = Guid.Parse(queryString.Substring(queryString.IndexOf('=') + 1));
     }
     MudForm form;
-    private string value { get; set; } = "Nothing selected";
-    private IEnumerable<string> options { get; set; } = new HashSet<string>() { "Headache" };
+    private string value { get; set; } = "No symptom selected";
+    private IEnumerable<string> options { get; set; } = new HashSet<string>() {  };
 
     private string[] symptoms =
     {
@@ -91,9 +76,10 @@
 
     private void SaveSymptoms()
     {
-        patientService.SavePatientSymptoms(SelectedSymptoms);
+        selectedSymptoms.PatientGuid = patientGuid;
+        patientService.SavePatientSymptoms(selectedSymptoms);
         snackBar.Add("Patient symptoms saved successfully:::", Severity.Success);
-        NavigationManager.NavigateTo($"/clinicalData?fieldValue={patientGuid}");
+        NavigationManager.NavigateTo($"/clinical-data?fieldValue={patientGuid}");
     }
 
 }

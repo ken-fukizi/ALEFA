@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Data\Repositories\" />
     <Folder Include="Domain\Events\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
   <ItemGroup>
