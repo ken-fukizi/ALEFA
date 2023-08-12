@@ -16,7 +16,8 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
                 
-                
+                <MudTextField @bind-Value="patient.Identifier" T="string" Label="Patient Identifier" Variant="Variant.Text" Required="false"  />
+
                 <MudTextField @bind-Value="patient.FirstName" T="string" Label="First Name" Variant="Variant.Text" Required="true" RequiredError="Patient first name is required!" />
                 <MudTextField @bind-Value= "patient.LastName" T="string" Label="Last Name" Required="true" RequiredError="Patient last name is required!" />
                 
@@ -37,11 +38,11 @@
                 
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree to terms and conditions" Label="I agree to Dr. Alefa's terms!" />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => { ShowProgress = true; SavePatient();})">Submit</MudButton>@if (ShowProgress)
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => { ShowProgress = true; SavePatient();})">Submit Patient Details</MudButton>@if (ShowProgress)
                     {
-                        <MudProgressCircular Indeterminate="true" />
+                        <MudProgressCircular Indeterminate="@(!ShowProgress)" Value="@((ShowProgress) ? 1 : 0)" />
                     }
-                    @*<MudProgressCircular Indeterminate="@(!ShowProgress)" Value="@((ShowProgress) ? 1 : 0)" />*@
+                    
                 </div>
             </MudForm>
         </MudPaper>
@@ -74,7 +75,7 @@
     public string fieldValue { get; set; }
     MudForm form;
     public string selectedGender { get; set; }
-    private PatientViewModel patient = new PatientViewModel();
+    private PatientDetailsViewModel patient = new PatientDetailsViewModel();
     private void SavePatient()
     {
         patient.Gender = selectedGender;

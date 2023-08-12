@@ -50,7 +50,7 @@ namespace UI.Services
             _dbContext.SaveChanges();
         }
 
-        public Guid SavePatientDetails(PatientViewModel patientViewModel)
+        public Guid SavePatientDetails(PatientDetailsViewModel patientViewModel)
         {
             var patient = PatientModel.Factory.Create
                 (

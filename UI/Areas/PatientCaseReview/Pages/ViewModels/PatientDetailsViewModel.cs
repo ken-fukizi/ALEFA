@@ -2,8 +2,9 @@
 
 namespace UI.Areas.PatientCaseReview.Pages.ViewModels
 {
-    public class PatientViewModel
+    public class PatientDetailsViewModel
     {
+        public string Identifier { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
