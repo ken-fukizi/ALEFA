@@ -34,9 +34,14 @@
                 <MudTextField @bind-Value="patient.Age" T="int" Label="Age" Required="true" RequiredError="Age is required!" />
                 <MudTextField @bind-Value="patient.Weight" T="int" Label="Weight (Kg)" Required="true" RequiredError="Weight is required!" />
                 <MudTextField @bind-Value="patient.Height" T="int" Label="Height (Cm)" Required="true" RequiredError="Age is required!" />
+                
                 <div class="d-flex align-center justify-space-between">
-                    <MudCheckBox T="bool" Required="true" RequiredError="You must agree to terms and conditions" Label="I agree to terms and conditions!" />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="SavePatient">Submit</MudButton>
+                    <MudCheckBox T="bool" Required="true" RequiredError="You must agree to terms and conditions" Label="I agree to Dr. Alefa's terms!" />
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => { ShowProgress = true; SavePatient();})">Submit</MudButton>@if (ShowProgress)
+                    {
+                        <MudProgressCircular Indeterminate="true" />
+                    }
+                    @*<MudProgressCircular Indeterminate="@(!ShowProgress)" Value="@((ShowProgress) ? 1 : 0)" />*@
                 </div>
             </MudForm>
         </MudPaper>
@@ -49,11 +54,11 @@
     </MudItem>
     <MudItem xs="12" sm="5">
         <MudPaper Class="pa-4 mud-height-full">
-            <MudText Typo="Typo.subtitle2">@($"Errors ({errors.Length})")</MudText>
+            
                 @foreach (var error in errors)
-            {
-                <MudText Color="@Color.Error">@error</MudText>
-            }
+                {
+                    <MudText Color="@Color.Error">@error</MudText>
+                }
         </MudPaper>
     </MudItem>
 </MudGrid>
@@ -61,7 +66,9 @@
 
 
 @code {
+    
     bool success;
+    bool ShowProgress = false;
     string[] errors = { };
     [Parameter]
     public string fieldValue { get; set; }
