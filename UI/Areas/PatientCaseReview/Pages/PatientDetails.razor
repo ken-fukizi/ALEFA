@@ -38,7 +38,7 @@
                 
                 <div class="d-flex align-center justify-space-between">
                     <MudCheckBox T="bool" Required="true" RequiredError="You must agree to terms and conditions" Label="I agree to Dr. Alefa's terms!" />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => { ShowProgress = true; SavePatient();})">Submit Patient Details</MudButton>@if (ShowProgress)
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => { ShowProgress = true; SavePatient();})">Submit</MudButton>@if (ShowProgress)
                     {
                         <MudProgressCircular Indeterminate="@(!ShowProgress)" Value="@((ShowProgress) ? 1 : 0)" />
                     }
