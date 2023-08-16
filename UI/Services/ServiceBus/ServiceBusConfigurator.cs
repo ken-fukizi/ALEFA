@@ -5,23 +5,24 @@ using SharedKernel.Exceptions;
 using Newtonsoft.Json;
 using Common.Configuration;
 using UI.Services.ServiceBus.Commands;
+using UI.Services.ServiceBus.Consumers;
 
 namespace UI.Services.ServiceBus
 {
-    public static class BusConfigurator
+    public static class ServiceBusConfigurator
     {
-        public static IBusControl ConfigureBus(IRegistrationContext<IServiceProvider> registration, MassTransitBusOptions massTransitBusOptions, IPublishObserver publishObserver, IReceiveObserver receiveObserver, IBusObserver busObserver, ISendObserver sendObserver)
+        public static IBusControl ConfigureBus(IRegistrationContext<IServiceProvider> registration, ServiceBusOptions serviceBusOptions, IPublishObserver publishObserver, IReceiveObserver receiveObserver, IBusObserver busObserver, ISendObserver sendObserver)
         {
             var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 var host = cfg.Host(
-                    host: massTransitBusOptions.Host,
-                    port: massTransitBusOptions.Port,
-                    virtualHost: massTransitBusOptions.VirtualHost,
+                    host: serviceBusOptions.Host,
+                    port: serviceBusOptions.Port,
+                    virtualHost: serviceBusOptions.VirtualHost,
                     configure: h =>
                     {
-                        h.Username(massTransitBusOptions.UserName);
-                        h.Password(massTransitBusOptions.Password);
+                        h.Username(serviceBusOptions.UserName);
+                        h.Password(serviceBusOptions.Password);
                     }
                 );
                 cfg.Durable = true;
@@ -35,23 +36,20 @@ namespace UI.Services.ServiceBus
 
                 cfg.BusObserver(busObserver);
 
-                
-                ConfigureStandardEndPoint<TestSaveCommandConsumer, TestSaveCommand>(
-                    registration,
-                    cfg,
-                    host,
-                    massTransitBusOptions.SaveCommunicationRequestEntryCommandQueue,
-                    new Type[] { typeof(PermanentException) });                
-                
+                #region StandardEndPoints
+                //Can configure as many endpoints as needed here
                 ConfigureStandardEndPoint<AddPatientToLabTestCommandConsumer, AddPatientToLabTestCommand>(
                     registration,
                     cfg,
                     host,
-                    massTransitBusOptions.AddPatientToLabTestCommandQueue,
+                    serviceBusOptions.AddPatientToLabTestCommandQueue,
                     new Type[] { typeof(PermanentException) });
-                
-            }
-            );
+
+                #endregion
+
+
+
+            });
 
 
             bus.ConnectSendObserver(sendObserver);
@@ -71,24 +69,23 @@ namespace UI.Services.ServiceBus
         /// <param name="provider"></param>
         /// <param name="cfg"></param>
         /// <param name="host"></param>
-        /// <param name="massTransitReceiverEndPointConfiguration"></param>
+        /// <param name="serviceBusReceiverEndPointConfiguration"></param>
         /// <param name="ignoreExceptions">An array of exception types that will be ignore for retries. IE if this exception occurs the messageReceivedEvent will be moved directly to an error queue</param>
         private static void ConfigureStandardEndPoint<TConsumer, TMessageType>(
             IRegistrationContext<IServiceProvider> registration,
             IRabbitMqBusFactoryConfigurator cfg,
             IRabbitMqHost host,
-            MassTransitReceiverEndPointConfiguration massTransitReceiverEndPointConfiguration,
+            ServiceBusReceiverEndpointConfiguration serviceBusReceiverEndPointConfiguration,
             Type[] ignoreExceptions) where TMessageType : class where TConsumer : class, IConsumer<TMessageType>
         {
-            cfg.ReceiveEndpoint(massTransitReceiverEndPointConfiguration.QueueName, e =>
+            cfg.ReceiveEndpoint(serviceBusReceiverEndPointConfiguration.QueueName, e =>
             {
                 e.AutoDelete = false;
-                e.PrefetchCount = massTransitReceiverEndPointConfiguration.PrefetchCount;
+                e.PrefetchCount = serviceBusReceiverEndPointConfiguration.PrefetchCount;
 
                 e.UseMessageRetry(retry =>
                 {
-                    //retry.Immediate(int.MaxValue);
-                    //ToDo: KF - this retry policy should be set specifically for the AddLeadMediaToVicidialCommand queue. All the other queus should use the immediate retry policy
+                    
                     retry.Interval(3, TimeSpan.FromHours(6));
 
                     retry.Handle<Exception>();
@@ -100,10 +97,10 @@ namespace UI.Services.ServiceBus
 
                 e.UseCircuitBreaker(cb =>
                 {
-                    cb.TrackingPeriod = TimeSpan.FromSeconds(massTransitReceiverEndPointConfiguration.CircuitBreakerConfig.TrackingPeriodInSeconds);
-                    cb.TripThreshold = massTransitReceiverEndPointConfiguration.CircuitBreakerConfig.TripThreshold;
-                    cb.ActiveThreshold = massTransitReceiverEndPointConfiguration.CircuitBreakerConfig.ActiveThreshold;
-                    cb.ResetInterval = TimeSpan.FromSeconds(massTransitReceiverEndPointConfiguration.CircuitBreakerConfig.ResetIntervalInSeconds);
+                    cb.TrackingPeriod = TimeSpan.FromSeconds(serviceBusReceiverEndPointConfiguration.CircuitBreakerConfig.TrackingPeriodInSeconds);
+                    cb.TripThreshold = serviceBusReceiverEndPointConfiguration.CircuitBreakerConfig.TripThreshold;
+                    cb.ActiveThreshold = serviceBusReceiverEndPointConfiguration.CircuitBreakerConfig.ActiveThreshold;
+                    cb.ResetInterval = TimeSpan.FromSeconds(serviceBusReceiverEndPointConfiguration.CircuitBreakerConfig.ResetIntervalInSeconds);
                     cb.Handle<Exception>();
                     foreach (var type in ignoreExceptions)
                     {
@@ -112,12 +109,12 @@ namespace UI.Services.ServiceBus
                 });
 
                 e.UseRateLimit(
-                    rateLimit: massTransitReceiverEndPointConfiguration.RateLimitVolume,
-                    interval: TimeSpan.FromSeconds(massTransitReceiverEndPointConfiguration.RateLimitIntervalInSeconds));
+                    rateLimit: serviceBusReceiverEndPointConfiguration.RateLimitVolume,
+                    interval: TimeSpan.FromSeconds(serviceBusReceiverEndPointConfiguration.RateLimitIntervalInSeconds));
 
                 e.ConfigureConsumer<TConsumer>(registration, consumerCfg =>
                 {
-                    consumerCfg.UseConcurrentMessageLimit(massTransitReceiverEndPointConfiguration.ConcurrentConsumerMessageLimit);
+                    consumerCfg.UseConcurrentMessageLimit(serviceBusReceiverEndPointConfiguration.ConcurrentConsumerMessageLimit);
                 });
                 EndpointConvention.Map<TMessageType>(e.InputAddress);
             });

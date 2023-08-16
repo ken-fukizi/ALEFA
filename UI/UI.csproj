@@ -11,6 +11,7 @@
     <PackageReference Include="MassTransit" Version="6.3.2" />
     <PackageReference Include="MassTransit.Analyzers" Version="6.3.2" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="6.3.2" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="6.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.20" />
@@ -21,8 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Repositories\" />
-    <Folder Include="Services\ServiceBus\Events\" />
-    <Folder Include="Services\ServiceBus\Observers\" />
+    <Folder Include="Domain\Events\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 

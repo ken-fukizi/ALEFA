@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common.Configuration
 {
-    public class MassTransitCircuitBreakerConfig
+    public class ServiceBusCircuitBreakerConfig
     {
         public int TrackingPeriodInSeconds { get; set; }
         public int TripThreshold { get; set; }
