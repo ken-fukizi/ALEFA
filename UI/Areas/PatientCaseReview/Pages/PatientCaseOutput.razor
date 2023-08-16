@@ -1,5 +1,5 @@
 ﻿@page "/case-output"
-<h3>PatientCaseOutput</h3>
+
 
 @using UI.Areas.PatientCaseReview.Pages.ViewModels;
 @using UI.Services;
@@ -7,7 +7,55 @@
 @inject MudBlazor.ISnackbar snackBar
 @inject NavigationManager NavigationManager
 
+<MudCardHeader>
+    <CardHeaderContent>
+        <MudText Typo="Typo.h6">Patient Case Output</MudText>
+    </CardHeaderContent>
+    <CardHeaderActions>
+        <MudIconButton Icon="@Icons.Material.Filled.MenuBook" Color="Color.Default" />
+    </CardHeaderActions>
+</MudCardHeader>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm>
+                <MudTextField @bind-Value="patientName" T="string" Label="Patient Name" />
+                <MudTextField @bind-Value="doctorName" Label="Doctor Name" />
+                <MudTextField @bind-Value="diagnosis" Label="Diagnosis" />
+                <MudTextField @bind-Value="treatmentOption1" Label="Treatment Option 1" />
+                <MudTextField @bind-Value="treatmentOption2" Label="Treatment Option 2" />
+                <MudTextField @bind-Value="treatmentOption3" Label="Treatment Option 3" />
+            </MudForm>
+        </MudPaper>
+
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+
+            @foreach (var error in errors)
+            {
+                <MudText Color="@Color.Error">@error</MudText>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+
+
 @code {
+
+    bool success;
+    string[] errors = { };
+
+    MudForm form;
+    string patientName = "John Smith";
+    string doctorName = "Dr. Jane Doe";
+    string diagnosis = "Hypertension";
+    string treatmentOption1 = "Lisinopril 10mg daily";
+    string treatmentOption2 = "Losartan 50mg daily";
+    string treatmentOption3 = "Hydrochlorothiazide 25mg daily";
     //On initialize, service to consolidate all findings
 
     //Collaboration with other departments happens along the journey here, with potential chatbots
