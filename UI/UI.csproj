@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Data\Repositories\" />
+    <Folder Include="Services\ServiceBus\Events\" />
+    <Folder Include="Services\ServiceBus\Observers\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
