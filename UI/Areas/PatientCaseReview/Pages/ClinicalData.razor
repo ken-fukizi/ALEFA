@@ -1,12 +1,20 @@
 ﻿@page "/clinical-data"
-<h3>ClinicalData</h3>
-<h2>Page 4 of 4</h2>
+
 
 @using UI.Areas.PatientCaseReview.Pages.ViewModels;
 @using UI.Services;
 @inject IPatientDetailsService patientService
 @inject MudBlazor.ISnackbar snackBar
 @inject NavigationManager NavigationManager
+
+<MudCardHeader>
+    <CardHeaderContent>
+        <MudText Typo="Typo.h6">Clinical Data</MudText>
+    </CardHeaderContent>
+    <CardHeaderActions>
+        <MudIconButton Icon="@Icons.Material.Filled.PanoramaPhotosphere" Color="Color.Default" />
+    </CardHeaderActions>
+</MudCardHeader>
 
 <MudGrid>
     <MudItem xs="12" sm="7">
